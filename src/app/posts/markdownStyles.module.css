@@ -1,0 +1,14 @@
+.markdown h2 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 2rem 0 0.5rem;
+}
+
+.markdown blockquote {
+  margin: 1rem 0;
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-left: 4px solid #228be6;
+  color: #495057;
+  border-radius: 4px;
+}
