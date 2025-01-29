@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { compareDesc, format, parseISO } from "date-fns";
 import { allPosts, Post } from "contentlayer/generated";
+import { DarkModeToggleButton } from "@/components/darkmode-toggle-button";
 
 function PostCard(post: Post) {
   return (
@@ -26,7 +27,10 @@ export default function Home() {
 
   return (
     <div className="">
-      <h1 className="mb-8 text-center text-2xl font-black">My Diary</h1>
+      <header className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-black">PearlDev 🧋</h1>
+        <DarkModeToggleButton />
+      </header>
       {posts.map((post, idx) => (
         <PostCard key={idx} {...post} />
       ))}
