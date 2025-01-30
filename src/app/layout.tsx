@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="mx-auto max-w-xl py-8">
+        <div className="mx-auto max-w-xl py-8 px-4">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
