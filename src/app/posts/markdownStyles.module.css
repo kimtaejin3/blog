@@ -12,3 +12,8 @@
   color: #495057;
   border-radius: 4px;
 }
+
+.markdown p {
+  line-height: 1.7;
+  word-break: keep-all;
+}
