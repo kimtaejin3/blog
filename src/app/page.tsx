@@ -9,7 +9,7 @@ import CategoryFilter from "@/components/category-filter";
 import PostCard from "@/components/post-card";
 
 export default function Home() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   // 모든 카테고리 목록 생성
   const categories = useMemo(() => {
@@ -19,10 +19,14 @@ export default function Home() {
 
   // 선택된 카테고리에 따라 포스트 필터링
   const filteredPosts = useMemo(() => {
-    if (selectedCategory === "all") {
-      return allPosts;
+    if (selectedCategory === "All") {
+      return allPosts.sort((a, b) =>
+        compareDesc(new Date(a.date), new Date(b.date))
+      );
     }
-    return allPosts.filter((post) => post.category === selectedCategory);
+    return allPosts
+      .filter((post) => post.category === selectedCategory)
+      .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   }, [selectedCategory]);
 
   return (

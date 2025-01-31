@@ -8,7 +8,7 @@ interface PostCardProps {
 export default function PostCard({ post }: PostCardProps) {
   return (
     <Link href={post.url}>
-      <article className="p-4 rounded-lg border hover:border-primary transition-colors">
+      <article className="p-4 rounded-lg hover:shadow-lg transition-shadow duration-300">
         <h2 className="text-xl font-semibold">{post.title}</h2>
         <div className="text-sm text-muted-foreground mt-2">
           <span>{new Date(post.date).toLocaleDateString("ko-KR")}</span>

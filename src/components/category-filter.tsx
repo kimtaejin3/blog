@@ -13,29 +13,44 @@ export default function CategoryFilter({
 }: CategoryFilterProps) {
   return (
     <div className="flex gap-2 mb-8">
-      <button
-        onClick={() => onChange("all")}
-        className={`px-4 py-2 rounded-md ${
-          selectedCategory === "all"
-            ? "bg-primary text-primary-foreground"
-            : "bg-secondary"
-        }`}
-      >
-        전체
-      </button>
+      <CategoryButton
+        category="All"
+        selectedCategory={selectedCategory}
+        onChange={onChange}
+      />
       {categories.map((category) => (
-        <button
+        <CategoryButton
           key={category}
-          onClick={() => onChange(category)}
-          className={`px-4 py-2 rounded-md ${
-            selectedCategory === category
-              ? "bg-primary text-primary-foreground"
-              : "bg-secondary"
-          }`}
-        >
-          {category}
-        </button>
+          category={category}
+          selectedCategory={selectedCategory}
+          onChange={onChange}
+        />
       ))}
     </div>
+  );
+}
+
+interface CategoryButtonProps {
+  category: string;
+  selectedCategory: string;
+  onChange: (category: string) => void;
+}
+
+function CategoryButton({
+  category,
+  selectedCategory,
+  onChange,
+}: CategoryButtonProps) {
+  return (
+    <button
+      onClick={() => onChange(category)}
+      className={`px-4 py-2 rounded-full ${
+        selectedCategory === category
+          ? "bg-primary text-primary-foreground"
+          : "bg-secondary"
+      }`}
+    >
+      {category}
+    </button>
   );
 }
