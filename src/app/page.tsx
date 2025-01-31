@@ -1,29 +1,29 @@
+"use client";
+
 import Link from "next/link";
 import { compareDesc, format, parseISO } from "date-fns";
 import { allPosts, Post } from "contentlayer/generated";
 import { DarkModeToggleButton } from "@/components/darkmode-toggle-button";
-
-function PostCard(post: Post) {
-  return (
-    <div className="mb-8">
-      <h2 className="mb-1 text-xl">
-        <Link href={post.url}>{post.title}</Link>
-      </h2>
-      <time dateTime={post.date} className="mb-2 block text-xs text-time">
-        {format(parseISO(post.date), "LLLL d, yyyy")}
-      </time>
-      <div
-        className="text-sm [&>*]:mb-3 [&>*:last-child]:mb-0 line-clamp-1"
-        dangerouslySetInnerHTML={{ __html: post.body.html }}
-      />
-    </div>
-  );
-}
+import { useState, useMemo } from "react";
+import CategoryFilter from "@/components/category-filter";
+import PostCard from "@/components/post-card";
 
 export default function Home() {
-  const posts = allPosts.sort((a, b) =>
-    compareDesc(new Date(a.date), new Date(b.date))
-  );
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // 모든 카테고리 목록 생성
+  const categories = useMemo(() => {
+    const categorySet = new Set(allPosts.map((post) => post.category));
+    return Array.from(categorySet);
+  }, []);
+
+  // 선택된 카테고리에 따라 포스트 필터링
+  const filteredPosts = useMemo(() => {
+    if (selectedCategory === "all") {
+      return allPosts;
+    }
+    return allPosts.filter((post) => post.category === selectedCategory);
+  }, [selectedCategory]);
 
   return (
     <div className="">
@@ -31,9 +31,16 @@ export default function Home() {
         <h1 className="text-2xl font-black">PearlDev 🧋</h1>
         <DarkModeToggleButton />
       </header>
-      {posts.map((post, idx) => (
-        <PostCard key={idx} {...post} />
-      ))}
+      <CategoryFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onChange={setSelectedCategory}
+      />
+      <div className="grid gap-4">
+        {filteredPosts.map((post) => (
+          <PostCard key={post._id} post={post} />
+        ))}
+      </div>
     </div>
   );
 }
