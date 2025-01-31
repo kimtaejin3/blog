@@ -44,9 +44,9 @@ function CategoryButton({
   return (
     <button
       onClick={() => onChange(category)}
-      className={`px-4 py-2 rounded-full ${
+      className={`px-3 py-1 rounded-full text-md ${
         selectedCategory === category
-          ? "bg-primary text-primary-foreground"
+          ? "bg-[#228be6] text-primary-foreground"
           : "bg-secondary"
       }`}
     >
