@@ -1,7 +1,13 @@
 .markdown h2 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin: 2rem 0 0.5rem;
+}
+
+.markdown h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 1.5rem 0 0.5rem;
 }
 
 .markdown blockquote {
@@ -21,4 +27,5 @@
   line-height: 1.7;
   word-break: keep-all;
   margin-top: 1rem;
+  font-size: 0.9rem;
 }
