@@ -29,3 +29,27 @@
   margin-top: 1rem;
   font-size: 0.9rem;
 }
+
+.markdown ol {
+  list-style-type: decimal;
+  margin-left: 15px;
+  margin-right: 10px;
+}
+
+.markdown ol li {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.markdown a {
+  color: #228be6;
+  text-decoration: underline;
+}
+
+.markdown pre {
+  margin-top: 1rem;
+}
+
+.markdown code {
+  font-size: 0.9rem;
+}
