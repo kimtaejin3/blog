@@ -53,3 +53,8 @@
 .markdown code {
   font-size: 0.9rem;
 }
+
+.markdown img {
+  width: 55%;
+  height: auto;
+}
