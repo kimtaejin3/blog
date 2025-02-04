@@ -33,7 +33,7 @@ return (
 
 ### 최적화
 
-리액트는 Virtual DOM을 통해 렌더링을 최적화하고, Reconciliation(재조정)과정을 통해 변경이 일어난 부분만 실제 DOM에 반영합니다. 이 과정에서 key props가 존재하면 재조정 과정을 효율적으로 수행할 수 있습니다. key props를 사용하지 않았을 때의 문제점과 key props를 사용했을 때의 최적화 예시를 알아봅시다.
+리액트는 Virtual DOM을 통해 렌더링을 최적화하고, Reconciliation(재조정)과정을 통해 변경이 일어난 부분을 파악합니다. key props는 React가 각 요소를 고유하게 식별할 수 있게 해주어, 실제 DOM 업데이트 시 필요한 변경사항만 정확하게 반영할 수 있게 합니다.
 
 ### 예시
 
@@ -97,12 +97,100 @@ const App = () => {
 
 ## Key props로 배열의 index를 사용하면 안되는 이유
 
-key가 바뀌면 리런더링 됨을 언급, 그리고 내가 준비한 인풋 예제도 언급
+key props를 추가한다면 재조정 과정에서 최적화가 되어 좋을 것입니다. 그렇다면 key로는 아무값이나 넣어도 괜찮을까요? key값은 고유한게 좋으며 바뀌는 값으로 하는 것은 좋지 않습니다. 보통 배열의 index를 key로 사용하는 코드를 볼 수 있는데 리스트 요소가 바뀌지 않는다면 상관없지만 리스트 요소가 바뀐다면 문제가 발생할 수 있습니다.
 
-### 예시
+```jsx
+const App = () => {
+  const [items, setItems] = useState([1, 2, 3]);
 
-## Key props가 변하면 리렌더링이 됩니다.
+  return (
+    <ul>
+      {items.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+```
 
-딥다이브 언급
+위와 같이 코드에서 item 4가 items 배열에 맨 앞에 추가된다면 어떨까요?
 
-### 예시
+![리액트 컴포넌트 렌더링](/images/image8.png)
+일단 알아두셔야 할 것은 key이 같으면 인스턴트는 재사용이 된다는 것입니다. 위의 상황에서
+key 값이 같은 것들끼리 1:1비교를 합니다. key값이 0인 컴포넌트는 재사용되면서 text가 item4로 변경되고, key 값이 각각 1과 2인 컴포넌트들도 재사용되면서 각각 item1, item2로 텍스트가 변경됩니다. key값이 3인 item은 새롭게 추가됐다고 판단합니다.
+
+여기서 중요한 문제점이 발생할 수 있습니다. 예를 들어, key값이 0인 컴포넌트가 단순히 텍스트만 렌더링 하는게 아니라 내부 상태(state)를 가지고 있다면, 그 상태는 컴포넌트가 재사용되면서 그대로 유지됩니다. 즉, item1의 상태가 item4에게 그대로 이어지게 되는 것입니다. 이는 사용자 입장에서 예상치 못한 동작을 발생시킬 수 있습니다.
+
+### 예제
+
+```jsx
+function App() {
+  const [todos, setTodos] =
+    useState<{ id: number; text: string }[]>(todoListDefault);
+
+  return (
+    <>
+      {todos.map((todo, index) => (
+        <TodoItem key={index} todo={todo} onSetTodos={setTodos} />
+      ))}
+    </>
+  );
+}
+
+function TodoItem({
+  todo,
+  onSetTodos,
+}: {
+  todo: { id: number; text: string };
+  onSetTodos: Dispatch<SetStateAction<{ id: number; text: string }[]>>;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [inputText, setInputText] = useState(todo.text);
+
+  return (
+    <div>
+      {isEditing ? (
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+        />
+      ) : (
+        <span>{todo.text}</span>
+      )}
+      <button
+        onClick={() => {
+          setIsEditing(!isEditing);
+          onSetTodos((prev) => [...prev, { id: 6, text: inputText }]);
+        }}
+      >
+        {isEditing ? "저장" : "수정"}
+      </button>
+    </div>
+  );
+}
+```
+
+위 코드에 대한 결과물은 아래와 같습니다. 맨 앞에 todo6 추가란 버튼을 누르면 todos 배열 맨 앞에 todo6 텍스트를 가진 todo를 추가하도록 했습니다.
+
+![리액트 컴포넌트 렌더링](/images/image9.png)
+
+수정 버튼을 누른 후의 결과물은 아래와 같습니다.
+
+![리액트 컴포넌트 렌더링](/images/image10.png)
+
+만약 위의 상태에서 맨 앞에 todo6 추가란 버튼을 누른다면 어떨까요?
+
+![리액트 컴포넌트 렌더링](/images/image11.png)
+
+위와같이 todo1이 아닌 todo6가 수정 모드가 되었고 안에 텍스트 또한 todo1로 보입니다. 반면 기존 todo1은 수정모드 였다가 수정 모드가 해제 되었습니다. 이러한 문제는 key값을 고유한 값이 아닌 바뀔 수 있는 배열의 index로 사용했기 때문에 나타나는 문제입니다. 이를 해결해주려면 고유의 key값을 사용해야 합니다.
+
+## 마무리
+
+리액트에서 key props를 사용하는 것은 단순히 경고 메시지를 없애기 위한 것이 아닙니다. key props는 리액트의 재조정 과정에서 중요한 역할을 하며, 애플리케이션의 성능 최적화와 올바른 동작을 위해 필수적입니다.
+
+key props 사용 시 주의할 점을 정리하면 다음과 같습니다:
+
+1. 배열을 렌더링할 때는 반드시 고유한 key props를 사용해야 합니다.
+2. key값으로는 변경되지 않는 고유한 값(ID 등)을 사용해야 합니다.
+3. 배열의 index를 key로 사용하면 예상치 못한 버그가 발생할 수 있으므로 피해야 합니다.
