@@ -22,7 +22,7 @@ export function DarkModeToggleButton() {
       size="icon"
       onClick={handleThemeToggle}
     >
-      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-[#228be6]" />
+      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-[#fa743b]" />
       <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-yellow-400" />
       <span className="sr-only">Toggle theme</span>
     </Button>
