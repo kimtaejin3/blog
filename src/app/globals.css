@@ -148,3 +148,27 @@ code[data-line-numbers-max-digits="4"] > [data-line]::before {
   color: var(--shiki-dark);
   background-color: var(--shiki-dark-bg);
 }
+
+pre {
+  position: relative;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #393939;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.copy-button:hover {
+  transform: scale(1.1);
+}
+
+.light .copy-button {
+  background-color: #6c6c6c;
+  color: #000;
+}
