@@ -2,11 +2,16 @@ import { format, parseISO } from "date-fns";
 import { allPosts, Post } from "contentlayer/generated";
 import styles from "../markdownStyles.module.css";
 import { useMDXComponent } from "next-contentlayer/hooks";
+import { PreCustom } from "@/components/pre";
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
   const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
   if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
   return { title: post.title };
+};
+
+const components = {
+  pre: PreCustom,
 };
 
 export default function PostPage({ params }: { params: { slug: string } }) {
@@ -24,7 +29,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
       </div>
 
       <main className={styles.markdown}>
-        <MDXContent />
+        <MDXContent components={components} />
       </main>
     </article>
   );
