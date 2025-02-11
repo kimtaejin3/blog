@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Copy } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 
 export const CopyButton = ({
   text,
@@ -11,8 +11,14 @@ export const CopyButton = ({
   text: string;
   className?: string;
 }) => {
+  const [copied, setCopied] = useState(false);
+
   const copy = async () => {
     await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 700);
   };
 
   return (
@@ -23,7 +29,7 @@ export const CopyButton = ({
         className
       )}
     >
-      <Copy className="w-4 h-4" />
+      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
     </button>
   );
 };
