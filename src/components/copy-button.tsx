@@ -25,7 +25,7 @@ export const CopyButton = ({
     <button
       onClick={copy}
       className={cn(
-        "absolute top-4 right-4 p-2 rounded-md bg-slate-400 text-white",
+        "absolute top-4 right-4 p-2 rounded-md bg-slate-400 text-white hover:scale-105 transition-all duration-300",
         className
       )}
     >
