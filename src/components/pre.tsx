@@ -11,7 +11,6 @@ export function PreCustom(props: PreProps) {
     raw = "",
     ["data-language"]: dataLanguage = "Shell",
   } = props;
-  console.log("raw:", raw);
   return (
     <pre
       className="rounded-xl bg-slate-950  relative overflow-hidden p-[0.5rem] shadow-smooth"
