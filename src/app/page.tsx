@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { compareDesc, format, parseISO } from "date-fns";
-import { allPosts, Post } from "contentlayer/generated";
+import { compareDesc } from "date-fns";
+import { allPosts } from "contentlayer/generated";
 import { DarkModeToggleButton } from "@/components/darkmode-toggle-button";
 import { useState, useMemo } from "react";
-import CategoryFilter from "@/components/category-filter";
+import Category from "@/components/category";
 import PostCard from "@/components/post-card";
 
 export default function Home() {
@@ -35,7 +34,7 @@ export default function Home() {
         <h1 className="text-2xl font-black">PearlDev 🧋</h1>
         <DarkModeToggleButton />
       </header>
-      <CategoryFilter
+      <Category
         categories={categories}
         selectedCategory={selectedCategory}
         onChange={setSelectedCategory}

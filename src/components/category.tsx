@@ -1,12 +1,10 @@
-import { useState } from "react";
-
 interface CategoryFilterProps {
   categories: string[];
   selectedCategory: string;
   onChange: (category: string) => void;
 }
 
-export default function CategoryFilter({
+export default function Category({
   categories,
   selectedCategory,
   onChange,
