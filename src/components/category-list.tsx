@@ -1,31 +1,32 @@
-import CategoryButton from "./category-button";
+import { allPosts } from "contentlayer/generated";
+import CategorySelectButton from "./category-select-button";
 
 interface Props {
-  categories: string[];
   selectedCategory: string;
-  onChange: (category: string) => void;
+  onSelectCategory: (category: string) => void;
 }
 
+const getCategories = () => {
+  const categorySet = new Set(allPosts.map((post) => post.category));
+  return ["All", ...Array.from(categorySet)];
+};
+
 export default function CategoryList({
-  categories,
   selectedCategory,
-  onChange,
+  onSelectCategory,
 }: Props) {
   return (
     <div className="flex gap-2 mb-8">
-      <CategoryButton
-        category="All"
-        selectedCategory={selectedCategory}
-        onChange={onChange}
-      />
-      {categories.map((category) => (
-        <CategoryButton
-          key={category}
-          category={category}
-          selectedCategory={selectedCategory}
-          onChange={onChange}
-        />
-      ))}
+      {getCategories().map((category) => {
+        return (
+          <CategorySelectButton
+            key={category}
+            name={category}
+            isSelected={selectedCategory === category}
+            onSelectCategory={onSelectCategory}
+          />
+        );
+      })}
     </div>
   );
 }
