@@ -4,13 +4,12 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 
-export const CopyButton = ({
-  text,
-  className,
-}: {
+interface Props {
   text: string;
   className?: string;
-}) => {
+}
+
+export function CopyButton({ text, className }: Props) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -32,4 +31,4 @@ export const CopyButton = ({
       {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
     </button>
   );
-};
+}

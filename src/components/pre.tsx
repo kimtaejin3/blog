@@ -1,11 +1,11 @@
 import { CopyButton } from "./copy-button";
 
-interface PreProps extends React.HTMLProps<HTMLPreElement> {
+interface Props extends React.HTMLProps<HTMLPreElement> {
   raw?: string;
   ["data-language"]?: string;
 }
 
-export function PreCustom(props: PreProps) {
+export function PreCustom(props: Props) {
   const {
     children,
     raw = "",
