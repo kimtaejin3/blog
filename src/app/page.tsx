@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-black">PearlDev 🧋</h1>
+        <h1 className="text-2xl font-black">Taejin&apos;s Blog</h1>
         <DarkModeToggleButton />
       </header>
 
