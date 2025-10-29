@@ -1,0 +1,60 @@
+---
+title: 10/22일 개발일지
+date: 2025-10-22
+category: "Development"
+description: useSuspenseQuery를 쓰다가 생긴 문제
+---
+
+> 오늘의 디버깅
+
+요즘에 나는 리액트로 개발을 할 때 data fetching 코드를 선언적으로 작성하기 위해 Suspense를 사용한다. 보통은 Tanstack Query의 useSuspenseQuery를 사용한다.
+내 기준에서 더 깔끔한 코드라고 생각하여 data fetching 코드는 모두 이렇게 구현하고 있었다.
+
+```tsx
+<ErrorBoundary
+  fallback={
+    <Error errorMessage="Board 데이터를 불러오는중 문제가 발생했어요." />
+  }
+>
+  <Suspense fallback={<Loading />}>
+    <BoardNavigationList />
+  </Suspense>
+</ErrorBoundary>
+```
+
+```tsx
+export default function BoardNavigationList() {
+  const { data: boardList } = useSuspenseQuery(boardListQueryOptions);
+
+  return (
+    <nav>
+      <S.NavigationList>
+        {boardList.map((board, index) => (
+          <NavigationItem key={board.id} board={board} index={index} />
+        ))}
+      </S.NavigationList>
+    </nav>
+  );
+}
+```
+
+예시로는 위와 같다. 사이드 바에서 board 목록을 보여주는 코드들이다. BoardNavigationList 컴포넌트는 boardList가 undefined 일 때, 즉 로딩 상태를 신경 쓰지 않아도 되는 컴포넌트가 된다. 랜더링에만 집중하는 컴포넌트이기에 단일 책임 원칙을 잘 따르게 된다.
+나는 위 같은 코드를 선호한다. 컴포넌트의 역할이 계층적으로 잘 분리됐기 때문에 이후 있을 유지보수에도 이점이 있을 것이다.
+
+> useSuspenseQuery를 쓰다가 생긴 문제
+
+<img src="/videos/uxdx-img.gif" alt="UX와 DX 사이의 고민" />
+
+위에서 확인할 수 있듯 사이드바에서 board 변경 이후 잠깐 이전 데이터가 남아 깜박거리는 현상이 발생한다. 이 문제는 Loading 컴포넌트가 보여진 다음에 생기는 문제이다.
+
+## 디버깅
+
+문제를 해결하기 위해서 내 눈으로 동작 과정을 확인하고 싶었다.
+따라서 tanstack query 디버거 툴과 debugger를 활용해서 디버깅을 해봤다.
+
+![image14](/images/image14.png)
+
+Suspense 안에 있는 컴포넌트의 상태가 변경되어 리렌더링 될 때 이전 데이터가 잠깐 보여지게 된 것이다. Suspense를 제거하고 리렌더링 될때 안전하게 Loading 을 보이기 위해
+useSuspenseQuery를 useQuery로 바꾸었다.
+
+data fetching 코드를 Suspense를 사용해 모두 선언적으로 관리하고 싶었다. 하지만, 사용성을 저하시키는 문제가 있었고 나는 UX가 DX보다 우선이라고 생각했기 때문에 이 같은 결정을 내렸다.
