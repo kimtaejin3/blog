@@ -9,14 +9,18 @@ interface Props {
 export default function PostCard({ post }: Props) {
   return (
     <Link href={post.url}>
-      <article className="p-4 rounded-lg hover:shadow-lg transition-shadow duration-300">
-        <h2 className="text-xl font-semibold">{post.title}</h2>
-        <div className="text-sm text-muted-foreground mt-2">
-          <span>{format(new Date(post.date), "yy년 M월 d일")}</span>
-          <span className="mx-2">•</span>
-          <span>{post.category}</span>
+      <article className="py-3 px-2 rounded hover:bg-accent transition-colors duration-200">
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-medium flex-1">{post.title}</h2>
+          <div className="flex items-center text-sm text-muted-foreground whitespace-nowrap ml-4">
+            <span>{format(new Date(post.date), "yy.MM.dd")}</span>
+            <span className="mx-2">•</span>
+            <span>{post.category}</span>
+          </div>
         </div>
-        <p className="mt-2 text-muted-foreground">{post.description}</p>
+        {post.description && (
+          <p className="text-sm text-muted-foreground mt-1">{post.description}</p>
+        )}
       </article>
     </Link>
   );
