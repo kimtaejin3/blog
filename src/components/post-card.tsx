@@ -14,8 +14,8 @@ export default function PostCard({ post }: Props) {
           <h2 className="text-base font-medium flex-1">{post.title}</h2>
           <div className="flex items-center text-sm text-muted-foreground whitespace-nowrap ml-4">
             <span>{format(new Date(post.date), "yy.MM.dd")}</span>
-            <span className="mx-2">•</span>
-            <span>{post.category}</span>
+          <span className="mx-2">•</span>
+          <span>{post.category}</span>
           </div>
         </div>
         {post.description && (
