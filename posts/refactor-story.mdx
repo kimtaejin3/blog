@@ -237,22 +237,8 @@ export const useAuth = () => {
     }
   };
 
-  const signOut = async (provider: typeof providers[number]) => {
-    try {
-      if (provider === 'google') {
-        await GoogleSignin.signOut();
-      } else if (provider === 'kakao') {
-        await logout();
-      }
-      await supabase.auth.signOut();
-    } catch (error) {
-      console.error('Google 로그아웃 에러:', error);
-    }
-  };
-
   return {
     signInWithProvider: (provider: typeof providers[number]) => provider === 'google' ? signInWithGoogle() : signInWithKakao(),
-    signOut,
     isLoading,
   };
 };
